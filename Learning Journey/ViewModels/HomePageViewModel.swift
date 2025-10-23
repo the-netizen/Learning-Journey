@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GoalPageViewModel : ObservableObject {
+class HomePageViewModel : ObservableObject {
     @Published var learningGoal: String = ""
     @Published var learningDuration: GoalDuration = .week
     

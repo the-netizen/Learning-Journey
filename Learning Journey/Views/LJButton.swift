@@ -21,15 +21,17 @@ struct LJButton: View {
                 Text(title)
                     .bold()
                     .foregroundColor(.white)
-//                    .frame(width: .infinity, height: .infinity)
 //                    .padding(15)
 //                    .glassEffect()
                     .padding(5)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                    .background(backgroundColor)
+                    .clipShape(Capsule())
                 }
-                .buttonStyle(.glass)
                 .background(backgroundColor)
+                .buttonStyle(.glass)
                 .clipShape(Capsule())
-                .frame(width: .infinity, height: .infinity)
+//                .frame(width: .infinity, height: .infinity)
     }
 }
 

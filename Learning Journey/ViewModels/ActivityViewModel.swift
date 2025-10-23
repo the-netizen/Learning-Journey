@@ -8,5 +8,14 @@
 import Foundation
 
 class ActivityViewModel : ObservableObject {
-    init() {}
+    @Published var learningGoal: String = ""
+    @Published var learningDuration: GoalDuration
+    @Published var learnedDates: Set<Date> = []
+    @Published var frozenDates: Set<Date> = []
+
+    
+    init(learningGoal: String, learningDuration: GoalDuration) {
+        self.learningGoal = learningGoal
+        self.learningDuration = learningDuration
+    }
 }

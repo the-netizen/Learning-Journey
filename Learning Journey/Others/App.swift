@@ -11,7 +11,10 @@ import SwiftUI
 struct Learning_JourneyApp: App {
     var body: some Scene {
         WindowGroup {
-            GoalPageView()
+            NavigationView{
+                HomePageView()
+                
+            }
         }
     }
 }
