@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DatePickerView: View {
     @StateObject var viewModel = DatePickerViewModel()
+    @Binding var selectedDate: Date
     @State var showingMonthPicker = false
     
     var body: some View {
@@ -26,7 +27,7 @@ struct DatePickerView: View {
     private var headerView: some View {
         HStack{
             Button {
-                showingMonthPicker = true
+//                showingMonthPicker.toggle()
             } label: {
                 HStack{
                     Text(viewModel.currentDate.formatted(.dateTime.month(.wide).year()))
@@ -71,13 +72,24 @@ struct DatePickerView: View {
         
         HStack{
             ForEach(weekdays, id: \.self) {weekday in
-                Text(viewModel.dayString(for: weekday))
-                    .frame(maxWidth: .infinity)
+                Button {
+                    selectedDate = weekday
+                } label: {
+                    Text(viewModel.dayString(for: weekday))
+                        .frame(maxWidth: .infinity)
+                        .font(.title3)
+                    // highlight selected date
+                        .background(Calendar.current.isDate(weekday, inSameDayAs: selectedDate) ? .log : .clear)
+                        .foregroundColor(Calendar.current.isDate(weekday, inSameDayAs: selectedDate) ? .white : .log)
+                            .clipShape(Circle())
+                            .padding(10)
+                }
+
             }
         }
     }
 }
 
-#Preview {
-    DatePickerView()
-}
+//#Preview {
+//    DatePickerView(selectedDate: T##Binding<Date>)
+//}

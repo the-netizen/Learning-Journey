@@ -8,30 +8,62 @@
 import SwiftUI
 
 struct LoginFreezeView: View {
-    @StateObject var viewModel = LoginFreezeViewModel()
+    @ObservedObject var viewModel: ActivityViewModel
+    var selectedDate: Date
+    
     var body: some View {
         VStack{
-            LJButton(
-                title: "Log as Learned",
-                backgroundColor: .log) {
-                //action
+            if viewModel.isDateLearned(selectedDate) {
+                LJButton(
+                    title: "Learned Today",
+                    backgroundColor: .disabledButton)
+                {
+                    //
                 }
                 .frame(width: 274, height: 274)
                 .padding(.bottom, 30)
                 .font(.largeTitle)
-        
-            LJButton(
-                title: "Log as Freezed",
-                backgroundColor: Color.freeze) {
-                    //action
-                }.frame(width: 274, height: 48)
+                .disabled(true)
+                .opacity(0.6)
+            }
+            else {
+                LJButton(
+                    title: "Log as Learned",
+                    backgroundColor: .log)
+                {
+                    viewModel.logAsLearned(selectedDate)
+                    
+                }
+                .frame(width: 274, height: 274)
+                .padding(.bottom, 30)
+                .font(.largeTitle)
+            }
             
-            Text("1 out of 2 freezes used")
-                .foregroundColor(.gray)
+            
+            
+            if viewModel.isDateFrozen(selectedDate) {
+                LJButton(
+                    title: "Log as Freezed",
+                    backgroundColor: .freeze) {
+                        //action
+                    }.frame(width: 274, height: 48)
+                    .disabled(true)
+            }
+            else {
+                LJButton(
+                    title: "Log as Freezed",
+                    backgroundColor: .freeze) {
+                        //action
+                        viewModel.logAsFrozen(selectedDate)
+                    }.frame(width: 274, height: 48)
+            }
+                
+                Text("\(viewModel.frozenDates.count) out of \(viewModel.freezesAllowed) freezes used")
+                    .foregroundColor(.gray)
         }
     }
 }
 
 #Preview {
-    LoginFreezeView()
+    LoginFreezeView(viewModel: ActivityViewModel(learningGoal: "Swift", learningDuration: GoalDuration.week), selectedDate: Date())
 }

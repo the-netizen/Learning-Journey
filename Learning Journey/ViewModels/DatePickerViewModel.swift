@@ -9,7 +9,7 @@ import Foundation
 
 class DatePickerViewModel : ObservableObject{
     @Published var currentDate: Date = Date()
-//    @Published var selectedDate: Date= Date()
+//    @Published var selectedDate: Date = Date()
     
     // fetches current week
     func fetchWeek() -> [Date] {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ActivityView: View {
     @StateObject var viewModel: ActivityViewModel
+    @State var selectedDate = Date()
     
     init(learningGoal: String, learningDuration: GoalDuration){
         _viewModel = StateObject(wrappedValue: ActivityViewModel(
@@ -18,10 +19,10 @@ struct ActivityView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack (spacing: 40){
                 VStack (alignment: .leading, content: {
-                    DatePickerView()
+                    DatePickerView(selectedDate: $selectedDate)
                         .padding(.top)
                         .padding(.bottom)
                     Text("Learning \(viewModel.learningGoal)")
@@ -34,11 +35,9 @@ struct ActivityView: View {
                     })
                     
                 }) //leading vstack
-//                .background(Color.disabledButton)
-//                .cornerRadius(10)
                 .padding()
                 
-                LoginFreezeView()
+                LoginFreezeView(viewModel: viewModel, selectedDate: selectedDate)
                 Spacer()
             } // main vstack
             
@@ -76,7 +75,7 @@ struct ActivityView: View {
 //                    .clipped()
                 
                 VStack(alignment: .leading, content: {
-                    Text("3")
+                    Text("\(viewModel.learnedDates.count)")
                         .font(.title)
                         .fontWeight(.bold)
                         .padding(.top)
@@ -102,7 +101,7 @@ struct ActivityView: View {
                     .font(.title2)
                 
                 VStack(alignment: .leading, content: {
-                    Text("1")
+                    Text("\(viewModel.frozenDates.count)")
                         .font(.title)
                         .fontWeight(.bold)
                         .padding(.top)

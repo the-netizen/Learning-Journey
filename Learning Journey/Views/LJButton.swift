@@ -24,8 +24,9 @@ struct LJButton: View {
 //                    .padding(15)
 //                    .glassEffect()
                     .padding(5)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
 //                    .background(backgroundColor)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                    .font(.system(size: 40))
                     .clipShape(Capsule())
                 }
                 .background(backgroundColor)
