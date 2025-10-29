@@ -9,12 +9,33 @@ import SwiftUI
 
 struct CalendarView: View {
     @StateObject var viewModel = CalendarViewModel()
+    @ObservedObject var activityViewModel: ActivityViewModel
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+        NavigationStack{
+            ScrollView{
+                VStack{
+                    
+                    ForEach(0..<12, id: \.self) { month in
+                        
+                        DatePicker(
+                            "Select date",
+                            selection: $activityViewModel.selectedDate,
+                            in: viewModel.getMonthRange(month: month),
+                            displayedComponents: [.date]
+                        )
+                        .datePickerStyle(.graphical)
+                        
+                    }
+                    
+                } //lazyvstack
+                .padding()
+            }//scrollview
+        }//navstack
+    }// body
 }
 
 #Preview {
-    CalendarView()
+    CalendarView(activityViewModel: ActivityViewModel(learningGoal: "Swift", learningDuration: .week))
 }
+
