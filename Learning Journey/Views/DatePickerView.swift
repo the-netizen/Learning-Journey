@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DatePickerView: View {
+    @ObservedObject var activityViewModel: ActivityViewModel
     @StateObject var viewModel = DatePickerViewModel()
     @Binding var selectedDate: Date
     @State var showingMonthPicker = false
@@ -27,7 +28,7 @@ struct DatePickerView: View {
     private var headerView: some View {
         HStack{
             Button {
-//                showingMonthPicker.toggle()
+                //                showingMonthPicker.toggle()
             } label: {
                 HStack{
                     Text(viewModel.currentDate.formatted(.dateTime.month(.wide).year()))
@@ -36,7 +37,7 @@ struct DatePickerView: View {
                     Image(systemName: "chevron.right")
                 }
             }
-
+            
             Spacer()
             Button {
                 viewModel.changeWeek(by: -7)
@@ -48,7 +49,7 @@ struct DatePickerView: View {
                 viewModel.changeWeek(by: 7)
             } label: {
                 Image(systemName: "chevron.right")
-
+                
             }
         }
     }
@@ -70,26 +71,49 @@ struct DatePickerView: View {
     private var dayNumbersView: some View {
         let weekdays = viewModel.fetchWeek()
         
-        HStack{
-            ForEach(weekdays, id: \.self) {weekday in
+        HStack {
+            ForEach(weekdays, id: \.self) { weekday in
                 Button {
                     selectedDate = weekday
                 } label: {
-                    Text(viewModel.dayString(for: weekday))
-                        .frame(maxWidth: .infinity)
-                        .font(.title3)
-                    // highlight selected date
-                        .background(Calendar.current.isDate(weekday, inSameDayAs: selectedDate) ? .log : .clear)
-                        .foregroundColor(Calendar.current.isDate(weekday, inSameDayAs: selectedDate) ? .white : .log)
-                            .clipShape(Circle())
-                            .padding(10)
-                }
+                    ZStack {
 
+                        if Calendar.current.isDate(weekday, inSameDayAs: selectedDate) {
+                            Circle()
+                                .fill(Color.log)
+                                .frame(width: 36, height: 36)
+                        }
+                        
+                        if activityViewModel.isDateLearned(weekday) {
+                            Circle()
+                                .fill(Color.log)
+                                .frame(width: 36, height: 36)
+                                .opacity(0.5)
+                        } else if activityViewModel.isDateFrozen(weekday) {
+                            Circle()
+                                .fill(Color.freeze)
+                                .frame(width: 36, height: 36)
+                                .opacity(0.5)
+                        }
+                        
+                        // Day number text
+                        Text(viewModel.dayString(for: weekday))
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(.primary)
+//                            .foregroundColor(activityViewModel.isDateFrozen(weekday) ? .log : .freeze)
+                    }
+                    .frame(maxWidth: .infinity)
+                } //buttons
             }
         }
     }
 }
 
-//#Preview {
-//    DatePickerView(selectedDate: T##Binding<Date>)
-//}
+#Preview {
+    @Previewable @State var previewDate = Date.now
+    return DatePickerView(
+        activityViewModel: ActivityViewModel(learningGoal: "SWIFT", learningDuration: .week),
+        selectedDate: $previewDate
+    )
+}
