@@ -22,7 +22,7 @@ struct ActivityView: View {
         NavigationStack {
             VStack (spacing: 40){
                 VStack (alignment: .leading, content: {
-                    DatePickerView(selectedDate: $selectedDate)
+                    DatePickerView(activityViewModel: viewModel, selectedDate: $selectedDate)
                         .padding(.top)
                         .padding(.bottom)
                     Text("Learning \(viewModel.learningGoal)")
@@ -45,7 +45,7 @@ struct ActivityView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem {
-                    NavigationLink(destination: CalendarView()) {
+                    NavigationLink(destination: CalendarView(activityViewModel: viewModel)) {
                         Image(systemName: "calendar")
                     }
                 }
